@@ -1,0 +1,9 @@
+{
+	"name": "cornerstone-d",
+	"authors": [
+		"kasrasadeghi"
+	],
+	"description": "cornerstone implemented in d",
+	"copyright": "Copyright © 2018, kasra",
+	"license": "MIT"
+}
