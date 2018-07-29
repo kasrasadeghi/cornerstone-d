@@ -41,4 +41,20 @@ class Texp {
 	void add(Texp c) {
 		_children = _children ~ [c];
 	}
+
+	// /* const */ const(Texp[]) children() const {
+		// return _children.to!(const(Texp[]));
+	// }
+
+	// /* const */ const(char[]) value() const {
+		// return _value.to!(const(char[]));
+	// }
+
+	Texp[] children() {
+		return _children;
+	}
+
+	char[] value() {
+		return _value;
+	}
 }
