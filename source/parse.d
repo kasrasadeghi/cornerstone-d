@@ -4,6 +4,9 @@ import std.path;
 import std.uni;
 import std.algorithm.searching;
 
+import std.conv;
+import std.algorithm;
+
 import texp;
 
 /// string -> Texp
@@ -14,6 +17,7 @@ Texp parseFile(string filename) {
 
 /// char[] -> Texp[]
 Texp[] parse(char[] content) {
+	content.removeComments;
 	Texp[] acc;
 	while (!content.empty) {
 		content.pWhitespace;
@@ -21,6 +25,11 @@ Texp[] parse(char[] content) {
 		content.pWhitespace;
 	}
 	return acc;
+}
+
+/// ref char[] -> ()
+void removeComments(ref char[] content) {
+	content = content.to!string.splitLines.map!(l => l.findSplit("//")[0]).join("\n").dup;
 }
 
 /// ref char[] -> Texp
