@@ -1,5 +1,6 @@
 import std.range;
 import std.conv;
+import std.algorithm;
 
 /// the node of the tree we're going to use.
 class Texp {
@@ -26,6 +27,14 @@ class Texp {
 			acc ~= child.toString(level + 1);
 		}
 		return acc.to!string;
+	}
+
+	string paren() const {
+		if (_children.length == 0) {
+			return _value.to!string;
+		} else {
+			return ("(" ~ _value ~ " " ~ _children.map!(c => c.paren).join(" ") ~ ")").to!string;
+		}
 	}
 
 	/// append to children
