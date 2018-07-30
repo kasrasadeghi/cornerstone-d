@@ -32,13 +32,6 @@ Texp[string] makeDict(Texp grammar) {
         auto v = c.children[0];
         gmap[k] = v;
     }
-
-    // grammar.children.each!(c => gmap[c.svalue] = c.children[0]);
-    // gmap.each((k, v) => (k ~ v.paren).writeln);
-    // auto maxKeyLength = gmap.keys.map!(k => k.length).maxElement;
-    // foreach (k, v; gmap) {
-    //     writefln("%"~(maxKeyLength + 1).to!string~"s ::= %s", k, v.paren[0] == '(' ? v.paren[1 .. $ - 1] : v.paren );
-    // }q
     return gmap;
 }
 
