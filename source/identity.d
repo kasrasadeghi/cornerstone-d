@@ -61,7 +61,6 @@ void generateTraversal(Texp[string] grammar, string current) {
         foreach (c; rule.children) {
             acc ~= c.svalue;
         }
-        // rule.children.each!(c => generateTraversal(grammar, c.value));
         break;
         
     case "|":
