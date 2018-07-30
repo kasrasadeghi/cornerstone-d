@@ -15,14 +15,14 @@ Texp[string] makeDict(Texp grammar) {
 
     Texp[string] gmap;
     foreach (Texp c; grammar.children()) {
-        auto k = c.value.to!string;
+        auto k = c.svalue;
         auto v = c.children[0];
         gmap[k] = v;
         auto rulerep = v.paren[0] == '(' ? v.paren[1 .. $ - 1] : v.paren;
         // writefln("%"~(maxValueLength + 1).to!string~"s ::= %s", k, rulerep);
     }
 
-    // grammar.children.each!(c => gmap[c.value.to!string] = c.children[0]);
+    // grammar.children.each!(c => gmap[c.svalue] = c.children[0]);
     // gmap.each((k, v) => (k ~ v.paren).writeln);
     // auto maxKeyLength = gmap.keys.map!(k => k.length).maxElement;
     // foreach (k, v; gmap) {
@@ -54,7 +54,7 @@ void generateTraversal(Texp[string] grammar, string current) {
         "many of ".print;
         rule.children.map!(c => c.paren).println;
         foreach (c; rule.children) {
-            acc ~= c.value.to!string;
+            acc ~= c.svalue;
         }
         // rule.children.each!(c => generateTraversal(grammar, c.value));
         break;
@@ -63,7 +63,7 @@ void generateTraversal(Texp[string] grammar, string current) {
         "a choice of ".print;
         rule.children.map!(c => c.paren).println;
         foreach (c; rule.children) {
-            acc ~= c.value.to!string;
+            acc ~= c.svalue;
         }
         break;
     
@@ -73,7 +73,7 @@ void generateTraversal(Texp[string] grammar, string current) {
         rule.paren.println;
         foreach (c; rule.children) {
             if (c.value[0].isUpper) {
-                acc ~= c.value.to!string;
+                acc ~= c.svalue;
             }
         }
         // rule.children.map!(c => c.paren).writeln;

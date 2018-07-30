@@ -57,4 +57,8 @@ class Texp {
 	char[] value() {
 		return _value;
 	}
+
+	string svalue() {
+		return _value.to!string;
+	}
 }
