@@ -11,7 +11,8 @@ import indentio : indent, dedent, print, println;
 void generateIdentity(Texp grammar) {
     // grammar.printGrammar;
     auto gmap = grammar.makeDict;
-    gmap.generateTraversal("Program");
+    // auto prods = gmap.foldTraversal("Program");
+    gmap.keys.each!(prod => gmap.generateTraversal(prod));
 }
 
 /// prints productions from a Texp
@@ -35,24 +36,10 @@ Texp[string] makeDict(Texp grammar) {
     return gmap;
 }
 
-/// keeps track of the history of traversed productions
-bool[string] history;
-
-/// creates a traversal from a history of productions
+/// creates a traversal from a production in a grammar
 void generateTraversal(Texp[string] grammar, string current) {
     (current ~"(texp) {").println; indent();
     scope(exit) {dedent();"}".println;}
-
-    if (current in history) {
-        return;
-    } 
-    history[current] = true;
-
-    string[] acc;
-    scope(exit) acc.each!(prod => generateTraversal(grammar, prod));
-
-    (current ~"(texp) {").println; indent++;
-    scope(exit) {indent--;"}".println;}
 
     Texp rule = grammar[current];
     if (rule.value == "|") {
@@ -77,30 +64,52 @@ void generateTraversal(Texp[string] grammar, string current) {
                 
                 dedent();
                 "}".println;
-                
             }
-        }
-        foreach (c; rule.children) {
-            acc ~= c.svalue;
         }
     } else {
         (rule.svalue ~ "(texp.svalue);").println;
 
+        foreach (num, c; rule.children.enumerate) {
+            if (c.svalue == "*") {
+                ("texp.children["~num.to!string~" .. $]." ~ c.children[0].svalue ~ ";").println;
+            } else {
+                (c.paren ~ "(texp.children[" ~ num.to!string ~ "]);").println;
+            }
+        }
+    } 
+}
+
+/// keeps track of the history of traversed productions
+bool[string] history;
+
+/// traverses grammar from current and adds everything that current depends on
+string[] foldTraversal(Texp[string] grammar, string current) {
+    if (current in history) {
+        return [];
+    } 
+    history[current] = true;
+    string[] acc;
+
+    Texp rule = grammar[current];
+    if (rule.value == "|") {
+        foreach (c; rule.children) {
+            acc ~= c.svalue;
+        }
+    } else {
         foreach (num, c; rule.children.enumerate) {
             if (c.value[0].isUpper) {                
                 acc ~= c.svalue;
             }
             if (c.svalue == "*") {
                 auto child = c.children[0];
-                ("texp.children["~num.to!string~" .. $]." ~ child.svalue ~ ";").println;
-
                 if (child.value[0].isUpper) {
                     acc ~= child.svalue;
                 }
-            } else {
-                (c.paren ~ "(texp.children[" ~ num.to!string ~ "]);").println;
             }
         }
-    }    
-}
+    }
+    
+    acc.each!(k => acc ~= grammar.foldTraversal(k));
 
+    return acc;
+}

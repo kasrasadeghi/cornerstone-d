@@ -1,9 +1,10 @@
 - [ ] generate identity traversal
   - [x] put grammar into dict
+  - [x] extract collection/fold
+    - foldTraversal
   - [ ] generate verification traversal
   - [ ] extract eval
   - [ ] extract recursion?
-  - [ ] extract collection/fold
 - [ ] test subtree modification
 - [ ] grammar normalization
 - [ ] grammar verification
