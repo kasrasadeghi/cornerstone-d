@@ -1,3 +1,6 @@
+import std.conv;
+import std.range;
+import std.stdio;
 
 /// keeps track of indents for print and println
 int indent = 0;
