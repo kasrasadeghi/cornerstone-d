@@ -65,8 +65,17 @@ void generateTraversal(Texp[string] grammar, string current) {
         break;
         
     case "|":
-        "a choice of ".print;
-        rule.children.map!(c => c.paren).println;
+        "// a choice of ".print;
+        rule.children.map!(c => c.svalue).println;
+        if (rule.children.all!(c => grammar[c.svalue].svalue != "|")) {
+            "switch (texp.value) {".println;
+            foreach (c; rule.children) {
+                ("case \"" ~ grammar[c.svalue].svalue ~ "\":").println; indent++;
+                "break;".println;
+                indent--;
+            }
+            "}".println;
+        }
         foreach (c; rule.children) {
             acc ~= c.svalue;
         }
