@@ -65,7 +65,11 @@ void generateTraversal(Texp[string] grammar, string current) {
             }
         }
     } else {
-        (rule.svalue ~ "(texp.svalue);").println;
+        if (rule.value[0] == '#') {
+            ("// texp.svalue matches " ~ rule.svalue).println;
+        } else {
+            ("assert \"" ~ rule.svalue ~ "\" == texp.svalue;").println;
+        }
 
         foreach (num, c; rule.children.enumerate) {
             if (c.svalue == "*") {
