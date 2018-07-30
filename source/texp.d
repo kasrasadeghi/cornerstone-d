@@ -50,14 +50,17 @@ class Texp {
 		// return _value.to!(const(char[]));
 	// }
 
+	/// should return const Texp[] children
 	Texp[] children() {
 		return _children;
 	}
 
+	/// should return const char[] _value
 	char[] value() {
 		return _value;
 	}
 
+	/// returns string value
 	string svalue() {
 		return _value.to!string;
 	}
