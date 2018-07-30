@@ -10,10 +10,9 @@ void generateIdentity(Texp grammar) {
     gmap.generateTraversal("Program");
 }
 
-Texp[string] makeDict(Texp grammar) {
+void printGrammar(Texp grammar) {
     auto maxValueLength = grammar.children.map!(k => k.value.length).maxElement;
 
-    Texp[string] gmap;
     foreach (Texp c; grammar.children()) {
         auto k = c.svalue;
         auto v = c.children[0];
@@ -21,13 +20,22 @@ Texp[string] makeDict(Texp grammar) {
         auto rulerep = v.paren[0] == '(' ? v.paren[1 .. $ - 1] : v.paren;
         // writefln("%"~(maxValueLength + 1).to!string~"s ::= %s", k, rulerep);
     }
+}
+
+Texp[string] makeDict(Texp grammar) {
+    Texp[string] gmap;
+    foreach (Texp c; grammar.children()) {
+        auto k = c.svalue;
+        auto v = c.children[0];
+        gmap[k] = v;
+    }
 
     // grammar.children.each!(c => gmap[c.svalue] = c.children[0]);
     // gmap.each((k, v) => (k ~ v.paren).writeln);
     // auto maxKeyLength = gmap.keys.map!(k => k.length).maxElement;
     // foreach (k, v; gmap) {
     //     writefln("%"~(maxKeyLength + 1).to!string~"s ::= %s", k, v.paren[0] == '(' ? v.paren[1 .. $ - 1] : v.paren );
-    // }
+    // }q
     return gmap;
 }
 
@@ -68,12 +76,22 @@ void generateTraversal(Texp[string] grammar, string current) {
         break;
     
     default:
-        "texp matches ".print;
+        "// texp matches ".print;
 
-        rule.paren.println;
         foreach (c; rule.children) {
             if (c.value[0].isUpper) {
                 acc ~= c.svalue;
+            }
+            if (c.svalue == "*") {
+                ("texp.children["~num.to!string~" .. $]").println;
+                num.to!string.println;
+                foreach (cc; c.children) {
+                    if (cc.value[0].isUpper) {
+                       acc ~= cc.svalue;
+                    }
+                }
+            } else {
+                (c.paren ~ "(texp.children[" ~ num.to!string ~ "])").println;
             }
         }
         // rule.children.map!(c => c.paren).writeln;
