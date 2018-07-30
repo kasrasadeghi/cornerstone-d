@@ -45,11 +45,7 @@ void generateTraversal(Texp[string] grammar, string current) {
     history[current] = true;
 
     string[] acc;
-    scope(exit) {
-        foreach (prod; acc) {
-            generateTraversal(grammar, prod);
-        }
-    }
+    scope(exit) acc.each!(prod => generateTraversal(grammar, prod));
     Texp rule = grammar[current];
     (current ~"(texp) {").println;
     indent++;
