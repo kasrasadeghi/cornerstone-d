@@ -5,7 +5,7 @@ import std.range;
 import std.ascii;
 
 import texp;
-import indentio;
+import indentio : indent, dedent, print, println;
 
 /// generates the identity traversal
 void generateIdentity(Texp grammar) {
