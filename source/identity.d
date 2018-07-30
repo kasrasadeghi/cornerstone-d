@@ -64,6 +64,14 @@ void generateTraversal(Texp[string] grammar, string current) {
         } else {
             "// a choice of ".print;
             rule.children.map!(c => c.svalue).println;
+            foreach (c; rule.children) {
+                ("if (is"~c.svalue~"(texp)) {").println; indent++;
+                (c.svalue ~ "(texp);").println;
+                
+                indent--;
+                "}".println;
+                
+            }
         }
         foreach (c; rule.children) {
             acc ~= c.svalue;
