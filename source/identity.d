@@ -5,12 +5,14 @@ import std.conv;
 import std.range;
 import std.ascii;
 
+/// generates the identity traversal
 void generateIdentity(Texp grammar) {
     grammar.printGrammar;
     auto gmap = grammar.makeDict;
     gmap.generateTraversal("Program");
 }
 
+/// prints productions from a Texp
 void printGrammar(Texp grammar) {
     auto maxValueLength = grammar.children.map!(k => k.value.length).maxElement;
 
@@ -22,6 +24,7 @@ void printGrammar(Texp grammar) {
     }
 }
 
+/// makes a dictionary from a grammar texp
 Texp[string] makeDict(Texp grammar) {
     Texp[string] gmap;
     foreach (Texp c; grammar.children()) {
@@ -39,7 +42,10 @@ Texp[string] makeDict(Texp grammar) {
     return gmap;
 }
 
+/// keeps track of the history of traversed productions
 bool[string] history;
+
+/// creates a traversal from a history of productions
 void generateTraversal(Texp[string] grammar, string current) {
 
     if (current in history) {
@@ -79,7 +85,7 @@ void generateTraversal(Texp[string] grammar, string current) {
         "// texp matches:".println;
 
         foreach (num, c; rule.children.enumerate) {
-            if (c.value[0].isUpper) {
+            if (c.value[0].isUpper) {                
                 acc ~= c.svalue;
             }
             if (c.svalue == "*") {
@@ -99,9 +105,13 @@ void generateTraversal(Texp[string] grammar, string current) {
     }    
 }
 
+/// keeps track of indents for print and println
 int indent = 0;
+
+/// accumulate print results for backtracking
 string acc;
 
+/// super write
 void print(T)(T arg) {
     // only when we have not just printed a newline do we indent
     if (acc.length == 0 || acc[$ - 1] == '\n') {
@@ -112,6 +122,7 @@ void print(T)(T arg) {
     arg.to!string.write;
 }
 
+/// super writeln
 void println(T)(T arg) {
     (arg.to!string ~ "\n").print;
 }
