@@ -46,10 +46,11 @@ void generateTraversal(Texp[string] grammar, string current) {
 
     string[] acc;
     scope(exit) acc.each!(prod => generateTraversal(grammar, prod));
-    Texp rule = grammar[current];
-    (current ~"(texp) {").println;
-    indent++;
+
+    (current ~"(texp) {").println; indent++;
     scope(exit) {indent--;"}".println;}
+
+    Texp rule = grammar[current];
     if (rule.value == "|") {
         if (rule.children.all!(c => grammar[c.svalue].svalue != "|")) {
             "switch (texp.value) {".println;
