@@ -28,9 +28,7 @@ void printGrammar(Texp grammar) {
 Texp[string] makeDict(Texp grammar) {
     Texp[string] gmap;
     foreach (Texp c; grammar.children()) {
-        auto k = c.svalue;
-        auto v = c.children[0];
-        gmap[k] = v;
+        gmap[c.svalue] = c.children[0];
     }
     return gmap;
 }
