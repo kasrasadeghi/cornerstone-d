@@ -1,9 +1,11 @@
 import std.algorithm;
-import texp;
 import std.stdio;
 import std.conv;
 import std.range;
 import std.ascii;
+
+import texp;
+import print;
 
 /// generates the identity traversal
 void generateIdentity(Texp grammar) {
