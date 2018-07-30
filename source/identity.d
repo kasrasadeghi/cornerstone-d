@@ -55,14 +55,6 @@ void generateTraversal(Texp[string] grammar, string current) {
     indent++;
     scope(exit) {indent--;"}".println;}
     switch (rule.value) {
-    case "*":
-        "many of ".print;
-        rule.children.map!(c => c.paren).println;
-        foreach (c; rule.children) {
-            acc ~= c.svalue;
-        }
-        break;
-        
     case "|":
         "// a choice of ".print;
         rule.children.map!(c => c.svalue).println;
