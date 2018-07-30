@@ -6,6 +6,7 @@ import std.range;
 import std.ascii;
 
 void generateIdentity(Texp grammar) {
+    grammar.printGrammar;
     auto gmap = grammar.makeDict;
     gmap.generateTraversal("Program");
 }
