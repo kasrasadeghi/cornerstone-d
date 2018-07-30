@@ -13,11 +13,11 @@ void generateIdentity(Texp grammar) {
     // grammar.printGrammar;
     auto gmap = grammar.makeDict;
     // auto prods = gmap.foldTraversal("Program");
-    gmap.keys.each!(prod => gmap.generateTraversal(prod));
+    gmap.keys.each!(prod => gmap.productionIdentity(prod));
 }
 
 /// creates a traversal from a production in a grammar
-void generateTraversal(Texp[string] grammar, string current) {
+void productionIdentity(Texp[string] grammar, string current) {
     (current ~"(texp) {").println; indent();
     scope(exit) {dedent();"}".println;}
 
