@@ -53,8 +53,6 @@ void generateTraversal(Texp[string] grammar, string current) {
             }
             "}".println;
         } else {
-            "// a choice of ".print;
-            rule.children.map!(c => c.svalue).println;
             foreach (num, c; rule.children.enumerate) {
                 if (num != 0) {
                     "else ".print;
