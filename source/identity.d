@@ -40,6 +40,8 @@ bool[string] history;
 
 /// creates a traversal from a history of productions
 void generateTraversal(Texp[string] grammar, string current) {
+    (current ~"(texp) {").println; indent();
+    scope(exit) {dedent();"}".println;}
 
     if (current in history) {
         return;
@@ -57,10 +59,10 @@ void generateTraversal(Texp[string] grammar, string current) {
         if (rule.children.all!(c => grammar[c.svalue].svalue != "|")) {
             "switch (texp.value) {".println;
             foreach (c; rule.children) {
-                ("case \"" ~ grammar[c.svalue].svalue ~ "\":").println; indent++;
+                ("case \"" ~ grammar[c.svalue].svalue ~ "\":").println; indent();
                 (c.svalue ~ "(texp);").println;
                 "break;".println;
-                indent--;
+                dedent();
             }
             "}".println;
         } else {
@@ -70,7 +72,7 @@ void generateTraversal(Texp[string] grammar, string current) {
                 if (num != 0) {
                     "else ".print;
                 }
-                ("if (is"~c.svalue~"(texp)) {").println; indent++;
+                ("if (is"~c.svalue~"(texp)) {").println; indent();
                 (c.svalue ~ "(texp);").println;
                 
                 indent--;
