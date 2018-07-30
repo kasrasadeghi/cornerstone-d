@@ -14,11 +14,10 @@ void printGrammar(Texp grammar) {
     auto maxValueLength = grammar.children.map!(k => k.value.length).maxElement;
 
     foreach (Texp c; grammar.children()) {
-        auto k = c.svalue;
-        auto v = c.children[0];
-        gmap[k] = v;
-        auto rulerep = v.paren[0] == '(' ? v.paren[1 .. $ - 1] : v.paren;
-        // writefln("%"~(maxValueLength + 1).to!string~"s ::= %s", k, rulerep);
+        const k = c.svalue;
+        const v = c.children[0];
+        const rulerep = v.paren[0] == '(' ? v.paren[1 .. $ - 1] : v.paren;
+        writefln("%"~(maxValueLength + 1).to!string~"s ::= %s", k, rulerep);
     }
 }
 
