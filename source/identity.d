@@ -75,7 +75,7 @@ void generateTraversal(Texp[string] grammar, string current) {
                 ("if (is"~c.svalue~"(texp)) {").println; indent();
                 (c.svalue ~ "(texp);").println;
                 
-                indent--;
+                dedent();
                 "}".println;
                 
             }
@@ -104,11 +104,7 @@ void generateTraversal(Texp[string] grammar, string current) {
     }    
 }
 
-/// keeps track of indents for print and println
-int indent = 0;
 
-/// accumulate print results for backtracking
-string acc;
 
 /// super write
 void print(T)(T arg) {
