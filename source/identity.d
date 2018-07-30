@@ -70,6 +70,7 @@ void generateTraversal(Texp[string] grammar, string current) {
             "switch (texp.value) {".println;
             foreach (c; rule.children) {
                 ("case \"" ~ grammar[c.svalue].svalue ~ "\":").println; indent++;
+                (c.svalue ~ "(texp);").println;
                 "break;".println;
                 indent--;
             }
