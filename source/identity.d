@@ -7,7 +7,7 @@ import std.ascii;
 
 /// generates the identity traversal
 void generateIdentity(Texp grammar) {
-    grammar.printGrammar;
+    // grammar.printGrammar;
     auto gmap = grammar.makeDict;
     gmap.generateTraversal("Program");
 }
