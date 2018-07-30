@@ -29,6 +29,7 @@ class Texp {
 		return acc.to!string;
 	}
 
+	/// paren representation
 	string paren() const {
 		if (_children.length == 0) {
 			return _value.to!string;
