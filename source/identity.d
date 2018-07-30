@@ -76,7 +76,7 @@ void generateTraversal(Texp[string] grammar, string current) {
             }
             if (c.svalue == "*") {
                 auto child = c.children[0];
-                ("texp.children["~num.to!string~" .. $]." ~ child.svalue).println;
+                ("texp.children["~num.to!string~" .. $]." ~ child.svalue ~ ";").println;
 
                 if (child.value[0].isUpper) {
                     acc ~= child.svalue;
