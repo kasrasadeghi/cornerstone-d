@@ -73,7 +73,8 @@ void generateTraversal(Texp[string] grammar, string current) {
         break;
     
     default:
-        "// texp matches:".println;
+
+        (rule.svalue ~ "(texp.value)").println;
 
         foreach (num, c; rule.children.enumerate) {
             if (c.value[0].isUpper) {                
