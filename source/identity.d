@@ -83,7 +83,6 @@ void generateTraversal(Texp[string] grammar, string current) {
             }
             if (c.svalue == "*") {
                 ("texp.children["~num.to!string~" .. $]").println;
-                num.to!string.println;
                 foreach (cc; c.children) {
                     if (cc.value[0].isUpper) {
                        acc ~= cc.svalue;
