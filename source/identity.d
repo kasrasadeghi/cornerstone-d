@@ -83,7 +83,7 @@ void generateTraversal(Texp[string] grammar, string current) {
     
     default:
 
-        (rule.svalue ~ "(texp.svalue)").println;
+        (rule.svalue ~ "(texp.svalue);").println;
 
         foreach (num, c; rule.children.enumerate) {
             if (c.value[0].isUpper) {                
@@ -98,7 +98,7 @@ void generateTraversal(Texp[string] grammar, string current) {
                     }
                 }
             } else {
-                (c.paren ~ "(texp.children[" ~ num.to!string ~ "])").println;
+                (c.paren ~ "(texp.children[" ~ num.to!string ~ "]);").println;
             }
         }
         // rule.children.map!(c => c.paren).writeln;
