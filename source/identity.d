@@ -84,7 +84,6 @@ void generateTraversal(Texp[string] grammar, string current) {
                 (c.paren ~ "(texp.children[" ~ num.to!string ~ "]);").println;
             }
         }
-        // rule.children.map!(c => c.paren).writeln;
     }    
 }
 
