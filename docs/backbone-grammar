@@ -2,19 +2,24 @@
 (TopLevel (| StrTable Struct Def Decl))
 (StrTable (str-table (* StrTableEntry)))
 (StrTableEntry (#int #string))
+
 (Struct (struct #name (* Field)))
 (Field (#name #type))
+
 (Decl (decl #name TypeList #type))
 (TypeList (types (* #type)))
+
 (Def (def #name ParamList #type Do))
 (ParamList (params (* Param)))
 (Param (#name #type))
+
+(ArgList (args (* Expr)))
 (CallLike (| Call CallVargs CallTail Become))
 (Call (call #name TypeList #type ArgList))
-(ArgList (args (* Expr)))
 (CallVargs (call-vargs #name TypeList #type ArgList))
 (CallTail (call-tail #name TypeList #type ArgList))
 (Become (become #name TypeList #type ArgList))
+
 (Stmt (| Let Return If Store Auto CallLike Do))
 (Let (let #name Expr))
 (If (if Expr Do))
@@ -24,6 +29,7 @@
 (Store (store Expr #type Expr))
 (Auto (auto #name #type))
 (Do (do (* Stmt)))
+
 (Expr (| CallLike MathBinop Icmp Load Index Cast Value))
 (Load (load #type Expr))
 (Index (index Expr #type Expr))
