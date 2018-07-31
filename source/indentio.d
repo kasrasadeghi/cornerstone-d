@@ -12,6 +12,7 @@ void indent() {
 
 void dedent() {
     .indent_count--;
+    assert(.indent_count >= 0);
 }
 
 /// accumulate print results for backtracking
