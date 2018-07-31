@@ -11,27 +11,24 @@ import std.conv;
 import parse;
 import test;
 import identity;
-import verification;
+// import verification;
+import verbose_check : generateVerification;
 
 
 void main(string[] args) {
-	if (args.length == 1) {
-		// writeln("No argument provided.");
-		static if ("source/grammarcheck.d") {
-			parseFile("docs/backbone-grammar").generateVerification;
-		} else {
-			import grammarcheck;
-			parseFile("docs/hello.bb").isProgram.writeln;
-		}
-	} else if (args[1] == "test") {
+    if (args.length == 1) {
+        // writeln("No argument provided.");
+        import grammarcheck : test; test();
+//        parseFile("docs/backbone-grammar").generateVerification;
 
-		test.test;
-	} else {
-		auto program = parseFile(args[1]);
-		writeln(program.toString());
-	}
+    } else if (args[1] == "gen") {
+        parseFile("docs/backbone-grammar").generateVerification;
+    } else {
+        auto program = parseFile(args[1]);
+        writeln(program.toString());
+    }
 }
 
 unittest {
-	test.test;
+    test.test;
 }
