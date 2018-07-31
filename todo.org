@@ -5,6 +5,9 @@
   - [ ] generate verification traversal
   - [ ] extract eval
   - [ ] extract recursion?
+  - [ ] compute minimum grammar
+    - [ ] compute minimum subset of known grammar
+    - [ ] generate grammar from program examples
 - [ ] test subtree modification
 - [ ] grammar normalization
 - [ ] grammar verification
