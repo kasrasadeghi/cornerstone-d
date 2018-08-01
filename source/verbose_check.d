@@ -13,12 +13,13 @@ void generateVerification(Texp grammar) {
     // grammar.printGrammar;
     auto gmap = grammar.makeDict;
     // auto prods = gmap.foldTraversal("Program");
-    "import texp;".println;
-    "import std.algorithm;".println;
-    "import result;".println;
-    "import indentio;".println;
-    "R matchValueClass(string a, string b) { return new R(true, \"trivial success\"); }".println;
-    "".println;
+    `
+import texp;.println;
+import std.algorithm;
+import result;
+import indentio;
+R matchValueClass(string a, string b) { return new R(true, "trivial success"); }
+`.println;
     
     // gmap = filter!((key, value) => key in ["Program", "TopLevel", "StrTable", "StrTableEntry"])(gmap);
 
@@ -78,6 +79,7 @@ void productionVerification(Texp[string] grammar, string current) {
 
 /// evaluate the verification of a name with respect to a Texp's value
 /// @param name is always expected to be the name of a texp.
+/// results in a representation of R
 string evalVerify(string name, Texp t) {
     if (t.value[0].isUpper) {
         return name ~ ".is" ~ t.svalue;
