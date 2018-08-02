@@ -3,6 +3,7 @@
   - [x] extract collection/fold
     - foldTraversal
   - [ ] generate verification traversal
+    
   - [ ] extract eval
   - [ ] extract recursion?
   - [ ] compute minimum grammar
@@ -11,3 +12,17 @@
 - [ ] test subtree modification
 - [ ] grammar normalization
 - [ ] grammar verification
+- [ ] invertible function between texp and json
+  - may not be isomorphic, but should be invertible
+- [ ] verification between passes
+  - [ ] cached lookup in verification steps between passes
+  - [ ] verification of elements of a grammar in a pass
+    - accessors based on the name of that production
+    - ex:
+      - (Add (+ arg1:Expr arg2:Expr))
+      - Add.arg1: texp -> texp
+        - a texp accessor
+        - makes sure that the input texp is an Add, that it follows the correct productions
+          up to the root, and that its children are well formed
+        - optionally can just check that its children are well-formed
+          - enables grammar verification to be much more flexible
