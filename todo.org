@@ -3,7 +3,7 @@
   - [x] extract collection/fold
     - foldTraversal
   - [ ] generate verification traversal
-    
+    - [ ] grammar verification
   - [ ] extract eval
   - [ ] extract recursion?
   - [ ] compute minimum grammar
@@ -11,7 +11,6 @@
     - [ ] generate grammar from program examples
 - [ ] test subtree modification
 - [ ] grammar normalization
-- [ ] grammar verification
 - [ ] invertible function between texp and json
   - may not be isomorphic, but should be invertible
 - [ ] verification between passes
