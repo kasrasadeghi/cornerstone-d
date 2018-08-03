@@ -18,8 +18,8 @@ import verbose_check : generateVerification;
 void main(string[] args) {
     if (args.length == 1) {
         // writeln("No argument provided.");
-        import grammarcheck : test; test();
-//        parseFile("docs/backbone-grammar").generateVerification;
+//        import grammarcheck : test; test();
+        parseFile("docs/backbone-grammar").generateVerification;
 
     } else if (args[1] == "gen") {
         parseFile("docs/backbone-grammar").generateVerification;
