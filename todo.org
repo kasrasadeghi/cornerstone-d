@@ -2,13 +2,22 @@
   - [x] put grammar into dict
   - [x] extract collection/fold
     - foldTraversal
-  - [ ] generate verification traversal
-    - [ ] grammar verification
+- [ ] generate verification traversal
+  - [ ] grammar verification
   - [ ] extract eval
-  - [ ] extract recursion?
-  - [ ] compute minimum grammar
-    - [ ] compute minimum subset of known grammar
-    - [ ] generate grammar from program examples
+    -> result
+- [ ] result
+  - [ ] choice
+  - [ ] sequence
+    - [ ] lazy bools instead of eager bools
+  - [ ] generic result that abstracts over a foldable type?
+    - can take in a node, the sequencing operation, and the choice operation
+- [ ] explore multi-stage compilation
+  - [ ] explore d mixins
+  - [ ] explore julia macros
+- [ ] compute minimum grammar
+  - [ ] compute minimum subset of known grammar
+  - [ ] generate grammar from program examples
 - [ ] test subtree modification
 - [ ] grammar normalization
 - [ ] invertible function between texp and json

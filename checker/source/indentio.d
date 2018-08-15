@@ -5,9 +5,6 @@ import std.stdio;
 /// keeps track of indents for print and println
 int indent_count = 0;
 
-/// whether or not indentio actions actually print, or just accumulate
-bool isPrinting = true;
-
 /// indent++
 void indent() {
     .indent_count++;
@@ -26,10 +23,10 @@ void print(T)(T arg) {
     // only when we have not just printed a newline do we indent
     if (acc.length == 0 || acc[$ - 1] == '\n') {
         acc ~= "  ".replicate(indent_count);
-        if (isPrinting) "  ".replicate(indent_count).write;
+        "  ".replicate(indent_count).write;
     }
     acc ~= arg.to!string;
-    if (isPrinting) arg.to!string.write;
+    arg.to!string.write;
 }
 
 /// super writeln

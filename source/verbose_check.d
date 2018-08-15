@@ -14,11 +14,15 @@ void generateVerification(Texp grammar) {
     auto gmap = grammar.makeDict;
     // auto prods = gmap.foldTraversal("Program");
     `
-import texp;.println;
 import std.algorithm;
+import std.stdio;
+
+import texp;
 import result;
 import indentio;
-R matchValueClass(string a, string b) { return new R(true, "trivial success"); }
+import parse;
+
+R matchValueClass(string a, string b) { return new R(() => true, "trivial success"); }
 `.println;
     
     // gmap = filter!((key, value) => key in ["Program", "TopLevel", "StrTable", "StrTableEntry"])(gmap);
@@ -28,12 +32,12 @@ R matchValueClass(string a, string b) { return new R(true, "trivial success"); }
     gmap.keys.each!(prod => gmap.productionVerification(prod));
 
     `
-void test() {
+void test(string filename) {
   import parse : parse;
   import std.conv;
   import std.stdio;
 
-  parseFile("docs/hello.bb").isProgram.writeln;
+  parseFile(filename).isProgram.writeln;
   //"(decl puts (type i8*) i32)".dup.parse()[0].isStrTable.to!string.writeln;
 }
    `.println;
@@ -50,11 +54,11 @@ void productionVerification(Texp[string] grammar, string current) {
         foreach (c; rule.children) {
             ("if (" ~ "texp".evalVerify(c) ~ "._result) {").println;
             indent();
-            ("return new R(true, \"in " ~ current ~ " matched " ~ c.svalue ~ "\");").println;
+            ("return new R(() => true, \"in " ~ current ~ " matched " ~ c.svalue ~ "\");").println;
             dedent();
             "}".println;
         }
-        ("return new R(false, texp.svalue ~ \"matched no " ~ current ~ "\");").println;
+        ("return new R(() => false, texp.svalue ~ \"matched no " ~ current ~ "\");").println;
     } else {
         string[] checks;
         checks ~= "texp".evalVerify(rule);
@@ -63,12 +67,14 @@ void productionVerification(Texp[string] grammar, string current) {
         // } else {
         //     checks ~= ("new R(" ~ "texp".evalVerify(rule) ~ ", \"does \" ~ texp.svalue ~ \" match " ~ rule.svalue ~ "?\")");
         // }
+        const child_count = rule.children.length;
         if (rule.children[$ - 1].isMany) {
-            const child_count = rule.children.length;
-            assert (child_count >= 1, rule.paren ~ " failed child_count >= 1.");
-            checks ~= "texp.children.length >=" ~ (child_count - 1).to!string;
+            if (child_count - 1 != 0) {
+                checks ~= "new R(() => texp.children.length >=" ~ (child_count - 1).to!string ~ `, "")`;
+            }
+        } else {
+            checks ~= `new R(() => texp.children.length == `~ child_count.to!string ~ `, " ")`;
         }
-        checks ~= `new R(texp.children.length > `;
         foreach (num, c; rule.children.enumerate) {
             if (c.svalue == "*") {
                 checks ~= "texp.children["~num.to!string~" .. $].map!(c => " ~ "c".evalVerify(c.children[0]) ~ ").fold!((a, b) => a & b)";
@@ -89,7 +95,13 @@ bool isProd(Texp t) { return t.value[0].isUpper; }
 bool isValueClass(Texp t) { return t.value[0] == '#'; }
 
 /// checks if a texp represents a klein star
-bool isMany(Texp t) { return t.svalue == "*"; }
+bool isMany(Texp t) { 
+    const pass = t.svalue == "*";
+    if (pass) {
+        assert (t.children.length >= 1, t.paren ~ " should have more than one child because it is many");
+    }
+    return pass;
+}
 
 /// checks if a texp represents a choice
 bool isChoice(Texp t) { return t.value == "|"; }
@@ -107,5 +119,5 @@ string evalVerify(string name, Texp t) {
     }
     assert (t.value[0].isLower);
     const cond = name ~ ".svalue == \"" ~ t.svalue ~ "\"";
-    return `new R(` ~ cond ~ `, "does " ~ texp.svalue ~ " match ` ~ t.svalue ~ `?")`;
+    return `new R(() => ` ~ cond ~ `, "does " ~ texp.svalue ~ " match ` ~ t.svalue ~ `?")`;
 }

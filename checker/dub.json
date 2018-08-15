@@ -1,0 +1,9 @@
+{
+	"name": "checker",
+	"authors": [
+		"kasra"
+	],
+	"description": "A minimal D application.",
+	"copyright": "Copyright © 2018, kasra",
+	"license": "MIT"
+}
