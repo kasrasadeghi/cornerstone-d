@@ -62,11 +62,6 @@ void productionVerification(Texp[string] grammar, string current) {
     } else {
         string[] checks;
         checks ~= "texp".evalVerify(rule);
-        // if (rule.value[0] == '#' || rule.value[0].isUpper) {
-        //     checks ~= "texp".evalVerify(rule);
-        // } else {
-        //     checks ~= ("new R(" ~ "texp".evalVerify(rule) ~ ", \"does \" ~ texp.svalue ~ \" match " ~ rule.svalue ~ "?\")");
-        // }
         const child_count = rule.children.length;
         if (rule.children[$ - 1].isMany) {
             if (child_count - 1 != 0) {
@@ -77,9 +72,10 @@ void productionVerification(Texp[string] grammar, string current) {
         }
         foreach (num, c; rule.children.enumerate) {
             if (c.svalue == "*") {
-                checks ~= "texp.children["~num.to!string~" .. $].map!(c => " ~ "c".evalVerify(c.children[0]) ~ ").fold!((a, b) => a & b)";
+                checks ~= "new lazyR(() => texp.children["~num.to!string~" .. $]"
+                    ~ ".map!(c => " ~ "c".evalVerify(c.children[0]) ~ ").fold!((a, b) => a & b))";
             } else {
-                checks ~= ("texp.children[" ~ num.to!string ~ "]").evalVerify(c);
+                checks ~= "new lazyR(() => " ~ ("texp.children[" ~ num.to!string ~ "]").evalVerify(c) ~ ")";
             }
         }
         ("texp.paren.println;").println;

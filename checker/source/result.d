@@ -34,8 +34,17 @@ class R {
     }
 
     R opBinary(string op)(R rhs) if (op == "&") {
-        ("computing result for message: ("~ _message ~")").writeln;
         if (_result()) {
+            rhs._message = _message ~ "\n" ~ rhs._message;
+            return rhs;
+        } else {
+            return this;
+        }
+    }
+
+    R opBinary(string op)(lazyR lazy_rhs) if (op == "&") {
+        if (_result()) {
+            R rhs = lazy_rhs.make();
             rhs._message = _message ~ "\n" ~ rhs._message;
             return rhs;
         } else {
@@ -47,3 +56,19 @@ class R {
         return "R(" ~ _result().to!string ~ ", \"" ~ _message ~ "\")";
     }
 }
+
+class lazyR {
+    Nullable!R _result;
+    R delegate() _result_f;
+    this(R delegate() result_f) {
+        this._result_f = result_f;
+    }
+
+    R make() {
+        if (_result.isNull) {
+            _result = _result_f();
+        }
+        return _result;
+    }
+}
+    
