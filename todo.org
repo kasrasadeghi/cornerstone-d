@@ -1,3 +1,5 @@
+- [ ] verify the backbone grammar
+- [ ] implement backbone in d
 - [ ] generate identity traversal
   - [x] put grammar into dict
   - [x] extract collection/fold
