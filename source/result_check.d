@@ -16,14 +16,22 @@ void generateVerification(Texp grammar) {
     `
 import std.algorithm;
 import std.stdio;
+import std.string : isNumeric;
 
 import texp;
 import result;
 import indentio;
 import parse;
 
-R matchValueClass(string a, string b) { return new R(true, "TODO: does " ~ a ~ " match class #" ~ b); }
+R matchValueClass(string a, string b) {
+  if (b == "int") {
+    return new R(a.isNumeric, "checks that a string is numeric");
+  }
+  return new R(true, "TODO: does " ~ a ~ " match class #" ~ b);
+  
+}
 `.println;
+    //TODO: not just numeric, only integers.
     
     // gmap = filter!((key, value) => key in ["Program", "TopLevel", "StrTable", "StrTableEntry"])(gmap);
 
@@ -63,16 +71,20 @@ void productionVerification(Texp[string] grammar, string current) {
             ("current_result = " ~ "texp".evalVerify(c) ~ ";").println;
             ("if (current_result._result) {").println;
             indent();
+            (`(texp.paren ~ " ==> ` ~ c.paren ~ `").println;`).println;
             ("return new R(true, \"in " ~ current ~ " matched " ~ c.svalue ~ "\")\n        >> current_result;").println;
             dedent();
             "}".println;
         }
-        ("return new R(false, texp.svalue ~ \"matched no " ~ current ~ "\");").println;
+        ("return new R(false, texp.svalue ~ \" matched no " ~ current ~ "\");").println;
     } else {
         // tree regexp verification
 
         ("texp.paren.println;").println;
         ("\"" ~ rule.paren ~ "\".println;").println;
+        "".println;
+        "indent();".println;
+        "scope(exit) dedent();".println;
         "".println;
 
         // - check length

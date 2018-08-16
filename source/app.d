@@ -13,7 +13,7 @@ import result_check : generateVerification;
 void main(string[] args) {
     
     indentio.isPrinting = false;
-    parseFile("docs/hello-grammar").generateVerification;
+    parseFile("docs/def-grammar").generateVerification;
 
     File("checker/source/grammarcheck.d", "w").write(indentio.acc);
 }

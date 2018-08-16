@@ -1,17 +1,8 @@
 (Program (#name (* TopLevel)))
 (TopLevel (| 
-  StrTable 
-  //Struct
   Def 
-  Decl
   ))
-(StrTable (str-table (* StrTableEntry)))
-(StrTableEntry (#int #string))
 
-//(Struct (struct #name (* Field)))
-//(Field (#name #type))
-
-(Decl (decl #name TypeList #type))
 (TypeList (types (* #type)))
 
 (Def (def #name ParamList #type Do))
@@ -39,29 +30,13 @@
 (Return (| 
   ReturnValue 
   ))
-(ReturnValue (return-value Value #type))
+(ReturnValue (return-value Expr #type))
 (Do (do (* Stmt)))
 
 (Expr (| 
   CallLike 
   Value
   ))
-//(Load (load #type Expr))
-//(Index (index Expr #type Expr))
-//(Cast (cast #type #type Expr))
 (Value (| Literal StrGet #name))
 (Literal (| #int #bool))
 (StrGet (str-get #int))
-
-//(MathBinop (| Add))
-//(Icmp (| LT LE GT GE EQ NE))
-//(Add (+ #type Expr Expr))
-//(LT (< #type Expr Expr))
-//(LE (<= #type Expr Expr))
-//(GT (> #type Expr Expr))
-//(GE (>= #type Expr Expr))
-//(EQ (== #type Expr Expr))
-//(NE (!= #type Expr Expr))
-
-
-// Binop[x]  -> (x Type Expr Expr)
