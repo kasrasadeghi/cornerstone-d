@@ -1,14 +1,18 @@
 (Program (#name (* TopLevel)))
-  (TopLevel (| StrTable Struct Def Decl))
-
+(TopLevel (| 
+  StrTable 
+  //Struct 
+  Def 
+  Decl
+  ))
 (StrTable (str-table (* StrTableEntry)))
-  (StrTableEntry (#int #string))
+(StrTableEntry (#int #string))
 
-(Struct (struct #name (* Field)))
-  (Field (#name #type))
+//(Struct (struct #name (* Field)))
+//(Field (#name #type))
 
 (Decl (decl #name TypeList #type))
-  (TypeList (types (* #type)))
+(TypeList (types (* #type)))
 
 (Def (def #name ParamList #type Do))
 (ParamList (params (* Param)))
