@@ -1,6 +1,6 @@
-//(str-table (0 "Hello World\00"))
+(str-table (0 "Hello World\00"))
 
-(decl puts (type i8*) i32)
+(decl puts (types i8*) i32)
 
 //(def main params i32
 //  (do 

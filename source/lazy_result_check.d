@@ -22,7 +22,7 @@ import result;
 import indentio;
 import parse;
 
-R matchValueClass(string a, string b) { return new R(true, "TODO: does " ~ a ~ " match class #" ~ b); }
+R matchValueClass(string a, string b) { return new R(() => true, "trivial success"); }
 `.println;
     
     // gmap = filter!((key, value) => key in ["Program", "TopLevel", "StrTable", "StrTableEntry"])(gmap);
@@ -37,14 +37,8 @@ void test(string filename) {
   import std.conv;
   import std.stdio;
 
-  "".println;
-
-  auto r = parseFile(filename).isProgram;
-  //auto r = "(decl puts (types i8*) i32)".dup.parse()[0].isDecl;
-
-  "".println;
-  r._result.writeln;
-  r._message.writeln;
+  parseFile(filename).isProgram.writeln;
+  //"(decl puts (type i8*) i32)".dup.parse()[0].isStrTable.to!string.writeln;
 }
    `.println;
 }
@@ -56,43 +50,37 @@ void productionVerification(Texp[string] grammar, string current) {
 
     Texp rule = grammar[current];
     if (rule.value == "|") {
-        // choice verification
         ("(\"searching "~ current ~" with \" ~ texp.paren).println;").println;
-        "R current_result;".println;
         foreach (c; rule.children) {
-            ("current_result = " ~ "texp".evalVerify(c) ~ ";").println;
-            ("if (current_result._result) {").println;
+            ("if (" ~ "texp".evalVerify(c) ~ "._result) {").println;
             indent();
-            ("return new R(true, \"in " ~ current ~ " matched " ~ c.svalue ~ "\")\n        >> current_result;").println;
+            ("return new R(() => true, \"in " ~ current ~ " matched " ~ c.svalue ~ "\");").println;
             dedent();
             "}".println;
         }
-        ("return new R(false, texp.svalue ~ \"matched no " ~ current ~ "\");").println;
+        ("return new R(() => false, texp.svalue ~ \"matched no " ~ current ~ "\");").println;
     } else {
-        // tree regexp verification
-
-        ("texp.paren.println;").println;
-        ("\"" ~ rule.paren ~ "\".println;").println;
-        "".println;
-
-        // - check length
-        lengthVerify(rule);
-
-        // - check value
-        ("return " ~ "texp".evalVerify(rule) ~ "\n      >> ").print;   
-        
-        // - check children
         string[] checks;
+        checks ~= "texp".evalVerify(rule);
+        const child_count = rule.children.length;
+        if (rule.children[$ - 1].isMany) {
+            if (child_count - 1 != 0) {
+                checks ~= "new R(() => texp.children.length >=" ~ (child_count - 1).to!string ~ `, "")`;
+            }
+        } else {
+            checks ~= `new R(() => texp.children.length == `~ child_count.to!string ~ `, " ")`;
+        }
         foreach (num, c; rule.children.enumerate) {
             if (c.svalue == "*") {
-                // TODO assert that this c is the last one
-                checks ~= "texp.children[" ~ num.to!string~" .. $].map!(c => " ~ "c".evalVerify(c.children[0]) ~ `).fold!((a, b) => a & b)(new R(true, "checking children..."))`;
+                checks ~= "new lazyR(() => texp.children["~num.to!string~" .. $]"
+                    ~ ".map!(c => " ~ "c".evalVerify(c.children[0]) ~ ").fold!((a, b) => a & b))";
             } else {
-                checks ~= ("texp.children[" ~ num.to!string ~ "]").evalVerify(c);
+                checks ~= "new lazyR(() => " ~ ("texp.children[" ~ num.to!string ~ "]").evalVerify(c) ~ ")";
             }
         }
-        
-        (checks.join("\n       & ") ~ ";").println;
+        ("texp.paren.println;").println;
+        ("\"" ~ rule.paren ~ "\".println;").println;
+        ("return " ~ checks.join("\n       & ") ~ ";").println;
     }
 }
 
@@ -127,24 +115,5 @@ string evalVerify(string name, Texp t) {
     }
     assert (t.value[0].isLower);
     const cond = name ~ ".svalue == \"" ~ t.svalue ~ "\"";
-    return `new R(` ~ cond ~ `, "does " ~ texp.svalue ~ " == ` ~ t.svalue ~ `?")`;
-}
-
-void lengthVerify(Texp rule) {
-    const child_count = rule.children.length;
-    if (rule.children[$ - 1].isMany) {
-        auto length_check = "texp.children.length >= " ~ (child_count - 1).to!string;
-        (`if (!(` ~ length_check ~ `)) {`).println;
-        indent();
-        (`return new R(false, texp.svalue ~ " doesn't have ` ~ (child_count - 1).to!string ~ ` or more children");`).println;
-        dedent();
-        "}".println;
-    } else {
-        auto length_check = "texp.children.length >= " ~ child_count.to!string;
-        (`if (!(` ~ length_check ~ `)) {`).println;
-        indent();
-        (`return new R(false, texp.svalue ~ " doesn't have ` ~ child_count.to!string ~ ` children");`).println;
-        dedent();
-        "}".println;
-    }
+    return `new R(() => ` ~ cond ~ `, "does " ~ texp.svalue ~ " match ` ~ t.svalue ~ `?")`;
 }
