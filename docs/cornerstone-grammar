@@ -1,30 +1,26 @@
 (Program (#name (* TopLevel)))
-(TopLevel (| 
-  StrTable 
-  //Struct 
-  Def 
-  Decl
-  ))
-(StrTable (str-table (* StrTableEntry)))
-(StrTableEntry (#int #string))
+  (TopLevel (| StrTable Struct Def Decl))
 
-//(Struct (struct #name (* Field)))
-//(Field (#name #type))
+(StrTable (str-table (* StrTableEntry)))
+  (StrTableEntry (#int #string))
+
+(Struct (struct #name (* Field)))
+  (Field (#name #type))
 
 (Decl (decl #name TypeList #type))
-(TypeList (types (* #type)))
+  (TypeList (types (* #type)))
 
 (Def (def #name ParamList #type Do))
 (ParamList (params (* Param)))
 (Param (#name #type))
 
 (Do (do (* Stmt)))
-(Stmt (| Let Return If Store Auto Do))
+(Stmt (| Let Return If Store Auto Do CallLike))
   (Let (let #name Expr))
   (If (if Expr Do))
   (Return (| ReturnValue ReturnVoid))
-    (ReturnValue (return-value Expr #type))
-    (ReturnVoid (return-void))
+    (ReturnValue (return Expr #type))
+    (ReturnVoid (return))
   (Store (store Expr #type Expr))
   (Auto (auto #name #type))
 
@@ -44,7 +40,7 @@
     (GE (>= #type Expr Expr))
     (EQ (== #type Expr Expr))
     (NE (!= #type Expr Expr))
-  (ArgList (args (* Value)))
+  (ArgList (args (* Expr)))
   (CallLike (| Call CallVargs CallTail Become))
     (Call (call #name TypeList #type ArgList))
     (CallVargs (call-vargs #name TypeList #type ArgList))
