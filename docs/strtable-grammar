@@ -1,0 +1,6 @@
+(Program (#name (* TopLevel)))
+(TopLevel (| 
+  StrTable
+  ))
+(StrTable (str-table (* StrTableEntry)))
+(StrTableEntry (#int #string))

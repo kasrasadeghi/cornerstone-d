@@ -1,0 +1,7 @@
+(Program (#name (* TopLevel)))
+(TopLevel (| 
+  Decl
+  ))
+
+(Decl (decl #name TypeList #type))
+(TypeList (types (* #type)))

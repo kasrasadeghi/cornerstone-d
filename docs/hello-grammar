@@ -1,7 +1,7 @@
 (Program (#name (* TopLevel)))
 (TopLevel (| 
   StrTable 
-  //Struct 
+  //Struct
   Def 
   Decl
   ))
