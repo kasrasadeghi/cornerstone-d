@@ -8,7 +8,7 @@ import std.path : baseName, dirName;
 import parse;
 import test;
 import indentio;
-import result_check : generateVerification;
+import imp_result_check : generateVerification;
 
 
 void main(string[] args) {
