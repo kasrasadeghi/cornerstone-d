@@ -1,17 +1,34 @@
 - [0.9] verifier
-  - [ ] generate verification traversal
-    - [ ] grammar verification
-    - [ ] extract eval
+  - [x] generate verification traversal
+    - [x] grammar verification (naively done)
+    - [x] extract eval
       -> result
-  - [ ] result
-    - [ ] choice
-    - [ ] sequence
-      - [ ] lazy bools instead of eager bools
+  - fixup some issues:
+    - [ ] value classes
+    - [ ] pretty up formatting
+  - result
+    - [x] eager style results
+      - pros and cons:
+        + very simple
+        + wrapper around basic types
+        + probably fast
+        + already done
+        - no abstraction around conditions and computational sequencing
+        - must be generated and compiled
+    - [ ] lazy style result
+      - pros and cons:
+        - complicated
+        + a path towards interpretive verification
+        + algebraic abstractions
+      - [ ] choice
+      - [ ] sequence
     - [ ] generic result that abstracts over a foldable type?
       - can take in a node, the sequencing operation, and the choice operation
-- [ ] compute minimum grammar
-  - [ ] compute minimum subset of known grammar
-  - [ ] generate grammar from program examples
+- minimum grammar
+  - [ ] compute minimum grammar
+    - [ ] compute minimum subset of known grammar
+    - [ ] generate grammar from program examples
+  - [ ] extract minimum grammar
 - [ ] test subtree modification
 - [ ] grammar normalization
 - [ ] invertible function between texp and json
