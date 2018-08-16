@@ -137,7 +137,7 @@ string evalVerify(string name, Texp t) {
     if (t.isValueClass) {
         return name ~ ".svalue.matchValueClass(\"" ~ t.value[1 .. $].to!string ~ "\")";
     }
-    assert (t.value[0].isLower);
+    assert (t.value[0].isLower, t.svalue ~ " does not start with a lowercase alpha");
     const cond = name ~ ".svalue == \"" ~ t.svalue ~ "\"";
     return `new R(` ~ cond ~ `, "does " ~ texp.svalue ~ " == ` ~ t.svalue ~ `?")`;
 }

@@ -1,3 +1,3 @@
 default:
-	dub
+	cd verifier && dub
 	cd checker && dub

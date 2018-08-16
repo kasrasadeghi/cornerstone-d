@@ -1,8 +1,9 @@
 module cornerstone;
 
 import std.stdio;
-import std.file   : chdir, write;
+import std.file : chdir, write;
 import std.process;
+import std.path : baseName, dirName;
 
 import parse;
 import test;
@@ -13,7 +14,12 @@ import result_check : generateVerification;
 void main(string[] args) {
     
     indentio.isPrinting = false;
-    parseFile("docs/def-grammar").generateVerification;
+    string curr = __FILE_FULL_PATH__;
+    while (curr.baseName != "cornerstone-d") {
+        curr = curr.dirName;
+    }
+    chdir(curr);
+    parseFile("docs/hello-grammar").generateVerification;
 
     File("checker/source/grammarcheck.d", "w").write(indentio.acc);
 }

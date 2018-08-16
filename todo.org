@@ -1,22 +1,14 @@
-- [ ] verify the backbone grammar
-- [ ] implement backbone in d
-- [ ] generate identity traversal
-  - [x] put grammar into dict
-  - [x] extract collection/fold
-    - foldTraversal
-- [ ] generate verification traversal
-  - [ ] grammar verification
-  - [ ] extract eval
-    -> result
-- [ ] result
-  - [ ] choice
-  - [ ] sequence
-    - [ ] lazy bools instead of eager bools
-  - [ ] generic result that abstracts over a foldable type?
-    - can take in a node, the sequencing operation, and the choice operation
-- [ ] explore multi-stage compilation
-  - [ ] explore d mixins
-  - [ ] explore julia macros
+- [0.9] verifier
+  - [ ] generate verification traversal
+    - [ ] grammar verification
+    - [ ] extract eval
+      -> result
+  - [ ] result
+    - [ ] choice
+    - [ ] sequence
+      - [ ] lazy bools instead of eager bools
+    - [ ] generic result that abstracts over a foldable type?
+      - can take in a node, the sequencing operation, and the choice operation
 - [ ] compute minimum grammar
   - [ ] compute minimum subset of known grammar
   - [ ] generate grammar from program examples
@@ -36,3 +28,12 @@
           up to the root, and that its children are well formed
         - optionally can just check that its children are well-formed
           - enables grammar verification to be much more flexible
+- [ ] generate identity traversal
+  - [x] put grammar into dict
+  - [x] extract collection/fold
+    - foldTraversal
+- [ ] manually verify the backbone grammar
+- [ ] implement backbone in d
+- [ ] explore multi-stage compilation
+  - [ ] explore d mixins
+  - [ ] explore julia macros
