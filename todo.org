@@ -4,14 +4,28 @@
     - [x] extract eval
       -> result
   - fixup some issues:
-    - [ ] value classes
-    - [ ] pretty up formatting
+    - [.] value classes
+    - [x] pretty up formatting
   - result
+    - [ ] lazy imperative results
+      - [x] naive choice
+      - [x] naive many
+      - [x] naive many and only
+      - [x] one-step lookahead choice
+      - pros and cons:
+        + very simple
+        + probably faster
+        + no wrapper
+        + already done
+        + easy to understand constructs
+        - no abstraction around conditions and computational sequencing
+        - must be generated and compiled
+        - very verbose
     - [x] eager style results
       - pros and cons:
         + very simple
         + wrapper around basic types
-        + probably fast
+        + probably faster
         + already done
         - no abstraction around conditions and computational sequencing
         - must be generated and compiled

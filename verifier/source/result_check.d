@@ -16,22 +16,13 @@ void generateVerification(Texp grammar) {
     `
 import std.algorithm;
 import std.stdio;
-import std.string : isNumeric;
 
 import texp;
 import result;
 import indentio;
 import parse;
-
-R matchValueClass(string a, string b) {
-  if (b == "int") {
-    return new R(a.isNumeric, "checks that a string is numeric");
-  }
-  return new R(true, "TODO: does " ~ a ~ " match class #" ~ b);
-  
-}
+import value_class;
 `.println;
-    //TODO: not just numeric, only integers.
     
     // gmap = filter!((key, value) => key in ["Program", "TopLevel", "StrTable", "StrTableEntry"])(gmap);
 
