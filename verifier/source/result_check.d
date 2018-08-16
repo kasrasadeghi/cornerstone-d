@@ -63,7 +63,7 @@ void productionVerification(Texp[string] grammar, string current) {
     scope(exit) {dedent();"}".println;}
 
     Texp rule = grammar[current];
-    if (rule.value == "|") {
+    if (rule.isChoice) {
         // choice verification
         ("(\"searching "~ current ~" with \" ~ texp.paren).println;").println;
         "R current_result;".println;
