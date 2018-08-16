@@ -1,15 +1,7 @@
 (Program (#name (* TopLevel)))
-(TopLevel (| 
-  StrTable 
-  //Struct
-  Def 
-  Decl
-  ))
+(TopLevel (| StrTable Def Decl))
 (StrTable (str-table (* StrTableEntry)))
 (StrTableEntry (#int #string))
-
-//(Struct (struct #name (* Field)))
-//(Field (#name #type))
 
 (Decl (decl #name TypeList #type))
 (TypeList (types (* #type)))
@@ -19,49 +11,16 @@
 (Param (#name #type))
 
 (ArgList (args (* Value)))
-(CallLike (| 
-  Call 
-  //CallVargs 
-  //CallTail 
-  //Become
-  ))
+(CallLike (| Call))
 (Call (call #name TypeList #type ArgList))
-//(CallVargs (call-vargs #name TypeList #type ArgList))
-//(CallTail (call-tail #name TypeList #type ArgList))
-//(Become (become #name TypeList #type ArgList))
 
-(Stmt (| 
-  Let 
-  Return 
-  Do
-  ))
+(Stmt (| Let Return Do))
 (Let (let #name Expr))
-(Return (| 
-  ReturnValue 
-  ))
+(Return (| ReturnValue ))
 (ReturnValue (return-value Value #type))
 (Do (do (* Stmt)))
 
-(Expr (| 
-  CallLike 
-  Value
-  ))
-//(Load (load #type Expr))
-//(Index (index Expr #type Expr))
-//(Cast (cast #type #type Expr))
+(Expr (| CallLike Value))
 (Value (| Literal StrGet #name))
 (Literal (| #int #bool))
 (StrGet (str-get #int))
-
-//(MathBinop (| Add))
-//(Icmp (| LT LE GT GE EQ NE))
-//(Add (+ #type Expr Expr))
-//(LT (< #type Expr Expr))
-//(LE (<= #type Expr Expr))
-//(GT (> #type Expr Expr))
-//(GE (>= #type Expr Expr))
-//(EQ (== #type Expr Expr))
-//(NE (!= #type Expr Expr))
-
-
-// Binop[x]  -> (x Type Expr Expr)
