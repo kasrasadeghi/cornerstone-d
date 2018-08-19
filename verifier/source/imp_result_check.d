@@ -62,12 +62,11 @@ void productionVerification(Texp[string] grammar, string current) {
         "R current_result;".println;
         foreach (c; rule.children) {
             ("current_result = " ~ "texp".evalVerify(c) ~ ";").println;
-            ("if (current_result._result) {").println;
-            indent();
-            (`(texp.paren ~ " ==> ` ~ c.paren ~ `").println;`).println;
-            ("return new R(true, \"in " ~ current ~ " matched " ~ c.svalue ~ "\")\n        >> current_result;").println;
-            dedent();
-            "}".println;
+            ("if (current_result._result) ").print;
+            block(() {
+                (`(texp.paren ~ " ==> ` ~ c.paren ~ `").println;`).println;
+                ("return new R(true, \"in " ~ current ~ " matched " ~ c.svalue ~ "\")\n        >> current_result;").println;
+            });
         }
         ("return new R(false, texp.svalue ~ \" matched no " ~ current ~ "\");").println;
     } else {
@@ -85,11 +84,10 @@ void productionVerification(Texp[string] grammar, string current) {
 
         // - check value
         ("R value_check = " ~ "texp".evalVerify(rule) ~ ";").println;
-        ("if (!value_check._result) {").println;
-        indent();
-        `return new R(false, "failed: " ~ value_check._message);`.println;
-        dedent();
-        "}".println;
+        ("if (!value_check._result) ").print;
+        block(() {
+            `return new R(false, "failed: " ~ value_check._message);`.println;
+        });
         
         // - check children
         Texp last = rule.children[$ - 1];
@@ -97,16 +95,14 @@ void productionVerification(Texp[string] grammar, string current) {
         // - if last is many and only,
         if (last.svalue == "*" && rule.children.length == 1) {
             // - process everything that might match the many
-            (`foreach (num, c; texp.children[` ~ (rule.children.length - 1).to!string ~ " .. $].enumerate) {").println;
-            indent();
-            (`R result_name = ` ~ "c".evalVerify(last.children[0]) ~ `;`).println;
-            ("if (!result_name._result) {").println;
-            indent();
-            (`return new R(false, "failed matching ` ~ last.children[0].paren ~ `");`).println;
-            dedent();
-            "}".println;
-            dedent();
-            `}`.println;
+            (`foreach (num, c; texp.children[` ~ (rule.children.length - 1).to!string ~ " .. $].enumerate) ").print;
+            block(() {
+                (`R result_name = ` ~ "c".evalVerify(last.children[0]) ~ `;`).println;
+                ("if (!result_name._result) ").print;
+                block(() {
+                    (`return new R(false, "failed matching ` ~ last.children[0].paren ~ `");`).println;
+                });
+            });
         } else
 
         // - if last is many,
@@ -115,24 +111,21 @@ void productionVerification(Texp[string] grammar, string current) {
             foreach (num, c; rule.children[0 .. $ - 1].enumerate) {
                 string result_name = "child" ~ num.to!string ~ "_check";
                 ("R " ~ result_name ~ " = " ~ ("texp.children[" ~ num.to!string ~ "]").evalVerify(c) ~ ";").println;
-                (`if (!` ~ result_name ~ `._result) {`).println;
-                indent();
-                (`return ` ~ result_name ~ `;`).println;
-                dedent();
-                "}".println;
+                (`if (!` ~ result_name ~ `._result)`).print;
+                block(() {
+                    (`return ` ~ result_name ~ `;`).println;
+                });
             }
 
             // - process everything that might match the many
-            (`foreach (num, c; texp.children[` ~ (rule.children.length - 1).to!string ~ " .. $].enumerate) {").println;
-            indent();
-            (`R result_name = ` ~ "c".evalVerify(last.children[0]) ~ `;`).println;
-            ("if (!result_name._result) {").println;
-            indent();
-            (`return new R(false, "failed matching ` ~ last.children[0].paren ~ `");`).println;
-            dedent();
-            "}".println;
-            dedent();
-            `}`.println;
+            (`foreach (num, c; texp.children[` ~ (rule.children.length - 1).to!string ~ " .. $].enumerate)").print;
+            block(() {
+                (`R result_name = ` ~ "c".evalVerify(last.children[0]) ~ `;`).println;
+                ("if (!result_name._result)").print;
+                block(() {
+                    (`return new R(false, "failed matching ` ~ last.children[0].paren ~ `");`).println;
+                });
+            });
         } else {
             foreach (num, c; rule.children.enumerate) {
                 string result_name = "child" ~ num.to!string ~ "_check";
@@ -148,7 +141,7 @@ void productionVerification(Texp[string] grammar, string current) {
     }
 }
 
-void block(void delegate() contents) { // why is this a delegate delegate?
+void block(void delegate() contents) {
     "{".println;
     indent();
     contents();
