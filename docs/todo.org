@@ -11,7 +11,8 @@
       - [x] naive choice
       - [x] naive many
       - [x] naive many and only
-      - [x] one-step lookahead choice
+      - [ ] one-step lookahead choice
+      - [ ] result contains necessary proof
       - pros and cons:
         + very simple
         + probably faster

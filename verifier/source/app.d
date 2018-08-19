@@ -19,7 +19,7 @@ void main(string[] args) {
         curr = curr.dirName;
     }
     chdir(curr);
-    parseFile("docs/hello-grammar").generateVerification;
+    parseFile("grammars/hello-grammar").generateVerification;
 
     File("checker/source/grammarcheck.d", "w").write(indentio.acc);
 }
