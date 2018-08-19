@@ -10,5 +10,5 @@ void main(string[] args) {
         curr = curr.dirName;
     }
     curr.writeln;
-    test(curr ~ "/docs/hello.bb");
+    test(curr ~ "/inputs/hello.bb");
 }
