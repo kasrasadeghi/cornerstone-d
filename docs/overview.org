@@ -1,0 +1,14 @@
+the eventual way the system will work is an intermingling of programs
+
+there will be some initial grammar and a language snippet of that initial
+grammar.
+a single pass will transform a language snippet of the initial grammar to some
+other grammar.
+
+we will either create the output grammar by creating the full grammar ourselves,
+or describing it is a patch to a previous grammar.
+
+=> grammar patching program
+
+we'll need to the run the verifier with the grammar and the output of the pass
+that we ran.
